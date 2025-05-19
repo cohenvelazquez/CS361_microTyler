@@ -15,7 +15,8 @@ This repository contains a simple Orders microservice built with Node.js and Exp
 ### Clone the repository:
 
 git clone https://github.com/cohenvelazquez/CS361_microTyler.git
-cd CS361_microTyler
+
+cd CS361_microTyler/
 
 ### Install dependencies:
 
@@ -24,8 +25,11 @@ npm install
 ## Project Structure
 
 ├── checkout.js      # Main Express server implementation
+
 ├── testOrders.js    # Test script using axios to exercise endpoints
+
 ├── package.json     # Project metadata and dependencies
+
 └── README.md        # This file
 
 ## Usage
@@ -48,6 +52,7 @@ Orders microservice listening on http://localhost:3000
 
 - Body:
 
+'''yaml
 {
   "userId": "string",
   "items": [
@@ -55,7 +60,7 @@ Orders microservice listening on http://localhost:3000
     ...
   ]
 }
-
+'''
 - Response: 201 Created
 
 {
