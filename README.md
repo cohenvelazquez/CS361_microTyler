@@ -126,7 +126,7 @@ This will:
 
 If any request fails, the script will log an error and exit with code 1.
 
-### 2. Create Order
+### 1. Create Order
 
 ```mermaid
 sequenceDiagram
@@ -145,7 +145,7 @@ sequenceDiagram
     end
 ```
 
-### 2. Retrieve Order
+### 1. Retrieve Order
 
 ```mermaid
 sequenceDiagram
@@ -163,7 +163,7 @@ sequenceDiagram
     end
 ```
 
-### 2. Update Order
+### 1. Update Order
 
 ```mermaid
 sequenceDiagram
