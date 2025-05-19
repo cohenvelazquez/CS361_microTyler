@@ -22,16 +22,6 @@ cd CS361_microTyler/
 
 npm install
 
-## Project Structure
-
-├── checkout.js      # Main Express server implementation
-
-├── testOrders.js    # Test script using axios to exercise endpoints
-
-├── package.json     # Project metadata and dependencies
-
-└── README.md        # This file
-
 ## Usage
 
 ### Running the Service
@@ -52,7 +42,7 @@ Orders microservice listening on http://localhost:3000
 
 - Body:
 
-'''yaml
+'''
 {
   "userId": "string",
   "items": [
@@ -63,12 +53,14 @@ Orders microservice listening on http://localhost:3000
 '''
 - Response: 201 Created
 
+'''
 {
   "orderId": "uuid",
   "userId": "string",
   "status": "open",
   "items": [ ... ]
 }
+'''
 
 ### Retrieve an Order
 
@@ -76,12 +68,14 @@ Orders microservice listening on http://localhost:3000
 
 - Response: 200 OK
 
+'''
 {
   "orderId": "uuid",
   "userId": "string",
   "status": "open" | "complete",
   "items": [ ... ]
 }
+'''
 
 - Error: 404 Not Found if order does not exist.
 
@@ -91,10 +85,12 @@ Orders microservice listening on http://localhost:3000
 
 - Body (any combination):
 
+'''
 {
   "status": "open" | "complete",
   "items": [ ... ]
 }
+'''
 
 - Response: 200 OK with the updated order object.
 
