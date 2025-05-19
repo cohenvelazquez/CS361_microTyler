@@ -126,7 +126,7 @@ This will:
 
 If any request fails, the script will log an error and exit with code 1.
 
-### 1. Create Order
+## UML Diagram
 
 ```mermaid
 sequenceDiagram
@@ -134,54 +134,42 @@ sequenceDiagram
     participant OrdersService
     participant Database
 
-    Client->>OrdersService: POST /orders\n{ userId, items }
-    OrdersService->>OrdersService: Validate payload
-    alt Valid payload
-        OrdersService->>Database: createOrder(userId, items)
-        Database-->>OrdersService: OrderData
-        OrdersService-->>Client: 201 Created\n{ order JSON }
-    else Invalid payload
-        OrdersService-->>Client: 400 Bad Request\n{ error }
+    opt Create Order (POST /orders)
+        Client->>OrdersService: POST /orders\n{ userId, items }
+        OrdersService->>OrdersService: Validate payload
+        alt Valid payload
+            OrdersService->>Database: createOrder(userId, items)
+            Database-->>OrdersService: OrderData
+            OrdersService-->>Client: 201 Created\n{ order JSON }
+        else Invalid payload
+            OrdersService-->>Client: 400 Bad Request\n{ error }
+        end
     end
-```
 
-### 1. Retrieve Order
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant OrdersService
-    participant Database
-
-    Client->>OrdersService: GET /orders/{orderId}
-    OrdersService->>Database: findOrder(orderId)
-    Database-->>OrdersService: OrderData?
-    alt Order found
-        OrdersService-->>Client: 200 OK\n{ order JSON }
-    else Order not found
-        OrdersService-->>Client: 404 Not Found\n{ error }
-    end
-```
-
-### 1. Update Order
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant OrdersService
-    participant Database
-
-    Client->>OrdersService: PUT /orders/{orderId}\n{ status?, items? }
-    OrdersService->>OrdersService: Validate status (if provided)
-    alt Invalid status
-        OrdersService-->>Client: 400 Bad Request\n{ error }
-    else Status OK
-        OrdersService->>Database: updateOrder(orderId, fields)
-        Database-->>OrdersService: UpdatedOrder?
-        alt Order exists
-            OrdersService-->>Client: 200 OK\n{ updated order JSON }
+    opt Retrieve Order (GET /orders/{orderId})
+        Client->>OrdersService: GET /orders/{orderId}
+        OrdersService->>Database: findOrder(orderId)
+        Database-->>OrdersService: OrderData?
+        alt Order found
+            OrdersService-->>Client: 200 OK\n{ order JSON }
         else Order not found
             OrdersService-->>Client: 404 Not Found\n{ error }
+        end
+    end
+
+    opt Update Order (PUT /orders/{orderId})
+        Client->>OrdersService: PUT /orders/{orderId}\n{ status?, items? }
+        OrdersService->>OrdersService: Validate status (if provided)
+        alt Invalid status
+            OrdersService-->>Client: 400 Bad Request\n{ error }
+        else Status OK
+            OrdersService->>Database: updateOrder(orderId, fields)
+            Database-->>OrdersService: UpdatedOrder?
+            alt Order exists
+                OrdersService-->>Client: 200 OK\n{ updated order JSON }
+            else Order not found
+                OrdersService-->>Client: 404 Not Found\n{ error }
+            end
         end
     end
 ```
