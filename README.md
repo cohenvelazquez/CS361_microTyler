@@ -134,42 +134,54 @@ sequenceDiagram
     participant OrdersService
     participant Database
 
-    opt Create Order (POST /orders)
-        Client->>OrdersService: POST /orders\n{ userId, items }
-        OrdersService->>OrdersService: Validate payload
-        alt Valid payload
-            OrdersService->>Database: createOrder(userId, items)
+    opt Create Order
+        Client->>OrdersService: POST /orders { userId, items }
+        activate OrdersService
+        OrdersService->>OrdersService: validate payload
+        alt valid payload
+            OrdersService->>Database: createOrder(...)
+            activate Database
             Database-->>OrdersService: OrderData
-            OrdersService-->>Client: 201 Created\n{ order JSON }
-        else Invalid payload
-            OrdersService-->>Client: 400 Bad Request\n{ error }
+            deactivate Database
+            OrdersService-->>Client: 201 Created { order JSON }
+        else invalid payload
+            OrdersService-->>Client: 400 Bad Request { error }
         end
+        deactivate OrdersService
     end
 
-    opt Retrieve Order (GET /orders/{orderId})
+    opt Retrieve Order
         Client->>OrdersService: GET /orders/{orderId}
+        activate OrdersService
         OrdersService->>Database: findOrder(orderId)
+        activate Database
         Database-->>OrdersService: OrderData?
-        alt Order found
-            OrdersService-->>Client: 200 OK\n{ order JSON }
-        else Order not found
-            OrdersService-->>Client: 404 Not Found\n{ error }
+        deactivate Database
+        alt order found
+            OrdersService-->>Client: 200 OK { order JSON }
+        else not found
+            OrdersService-->>Client: 404 Not Found { error }
         end
+        deactivate OrdersService
     end
 
-    opt Update Order (PUT /orders/{orderId})
-        Client->>OrdersService: PUT /orders/{orderId}\n{ status?, items? }
-        OrdersService->>OrdersService: Validate status (if provided)
-        alt Invalid status
-            OrdersService-->>Client: 400 Bad Request\n{ error }
-        else Status OK
-            OrdersService->>Database: updateOrder(orderId, fields)
+    opt Update Order
+        Client->>OrdersService: PUT /orders/{orderId} { status?, items? }
+        activate OrdersService
+        OrdersService->>OrdersService: validate status
+        alt invalid status
+            OrdersService-->>Client: 400 Bad Request { error }
+        else status OK
+            OrdersService->>Database: updateOrder(...)
+            activate Database
             Database-->>OrdersService: UpdatedOrder?
-            alt Order exists
-                OrdersService-->>Client: 200 OK\n{ updated order JSON }
-            else Order not found
-                OrdersService-->>Client: 404 Not Found\n{ error }
+            deactivate Database
+            alt order exists
+                OrdersService-->>Client: 200 OK { updated order JSON }
+            else not found
+                OrdersService-->>Client: 404 Not Found { error }
             end
         end
+        deactivate OrdersService
     end
 ```
