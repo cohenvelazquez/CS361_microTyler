@@ -126,6 +126,7 @@ This will:
 
 If any request fails, the script will log an error and exit with code 1.
 
+### 2. Create Order
 
 ```mermaid
 sequenceDiagram
@@ -144,6 +145,8 @@ sequenceDiagram
     end
 ```
 
+### 2. Retrieve Order
+
 ```mermaid
 sequenceDiagram
     participant Client
@@ -159,6 +162,8 @@ sequenceDiagram
         OrdersService-->>Client: 404 Not Found\n{ error }
     end
 ```
+
+### 2. Update Order
 
 ```mermaid
 sequenceDiagram
