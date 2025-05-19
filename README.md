@@ -42,7 +42,7 @@ Orders microservice listening on http://localhost:3000
 
 - Body:
 
-'''
+```json
 {
   "userId": "string",
   "items": [
@@ -50,17 +50,17 @@ Orders microservice listening on http://localhost:3000
     ...
   ]
 }
-'''
+```
 - Response: 201 Created
 
-'''
+```json
 {
   "orderId": "uuid",
   "userId": "string",
   "status": "open",
   "items": [ ... ]
 }
-'''
+```
 
 ### Retrieve an Order
 
@@ -68,14 +68,14 @@ Orders microservice listening on http://localhost:3000
 
 - Response: 200 OK
 
-'''
+```json
 {
   "orderId": "uuid",
   "userId": "string",
   "status": "open" | "complete",
   "items": [ ... ]
 }
-'''
+```
 
 - Error: 404 Not Found if order does not exist.
 
@@ -85,12 +85,12 @@ Orders microservice listening on http://localhost:3000
 
 - Body (any combination):
 
-'''
+```json
 {
   "status": "open" | "complete",
   "items": [ ... ]
 }
-'''
+```
 
 - Response: 200 OK with the updated order object.
 
