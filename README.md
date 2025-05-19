@@ -142,7 +142,9 @@ sequenceDiagram
     else Invalid payload
         OrdersService-->>Client: 400 Bad Request\n{ error }
     end
+```
 
+```mermaid
 sequenceDiagram
     participant Client
     participant OrdersService
@@ -156,7 +158,9 @@ sequenceDiagram
     else Order not found
         OrdersService-->>Client: 404 Not Found\n{ error }
     end
+```
 
+```mermaid
 sequenceDiagram
     participant Client
     participant OrdersService
@@ -175,3 +179,4 @@ sequenceDiagram
             OrdersService-->>Client: 404 Not Found\n{ error }
         end
     end
+```
