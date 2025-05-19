@@ -28,7 +28,7 @@ npm install
 
 Start the orders microservice on the default port (3000):
 
-node index.js
+node checkout.js
 
 You should see:
 
@@ -125,3 +125,53 @@ This will:
 1. GET /orders/:orderId – final sanity-check.
 
 If any request fails, the script will log an error and exit with code 1.
+
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant OrdersService
+    participant Database
+
+    Client->>OrdersService: POST /orders\n{ userId, items }
+    OrdersService->>OrdersService: Validate payload
+    alt Valid payload
+        OrdersService->>Database: createOrder(userId, items)
+        Database-->>OrdersService: OrderData
+        OrdersService-->>Client: 201 Created\n{ order JSON }
+    else Invalid payload
+        OrdersService-->>Client: 400 Bad Request\n{ error }
+    end
+
+sequenceDiagram
+    participant Client
+    participant OrdersService
+    participant Database
+
+    Client->>OrdersService: GET /orders/{orderId}
+    OrdersService->>Database: findOrder(orderId)
+    Database-->>OrdersService: OrderData?
+    alt Order found
+        OrdersService-->>Client: 200 OK\n{ order JSON }
+    else Order not found
+        OrdersService-->>Client: 404 Not Found\n{ error }
+    end
+
+sequenceDiagram
+    participant Client
+    participant OrdersService
+    participant Database
+
+    Client->>OrdersService: PUT /orders/{orderId}\n{ status?, items? }
+    OrdersService->>OrdersService: Validate status (if provided)
+    alt Invalid status
+        OrdersService-->>Client: 400 Bad Request\n{ error }
+    else Status OK
+        OrdersService->>Database: updateOrder(orderId, fields)
+        Database-->>OrdersService: UpdatedOrder?
+        alt Order exists
+            OrdersService-->>Client: 200 OK\n{ updated order JSON }
+        else Order not found
+            OrdersService-->>Client: 404 Not Found\n{ error }
+        end
+    end
